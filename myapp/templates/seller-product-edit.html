@@ -1,0 +1,168 @@
+{% extends 'seller-header.html' %}
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	
+  </head>
+  <body class="goto-here">
+     
+    <div class="hero-wrap hero-bread" style="background-image: url('{% static 'images/bg_6.jpg' %}');">
+      <div class="container">
+        <div class="row no-gutters slider-text align-items-center justify-content-center">
+          <div class="col-md-9 ftco-animate text-center">
+          	<p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home</a></span> <span>Edit Product</span></p>
+            <h1 class="mb-0 bread">Edit Product</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="ftco-section contact-section bg-light">
+      <div class="container">
+        <div class="row block-12">
+          <div class="col-md-12 order-md-last d-flex">
+			{% if msg %}
+			<b style="color: blue;">{{msg}}</b>
+			{% endif %}
+            <form class="bg-white p-5 contact-form" method="post" action="{% url 'seller-product-edit' pk=product.pk %}" enctype="multipart/form-data">
+				    {% csrf_token %}
+              <div class="form-group">
+                <select name="product_category" class="form-control">
+                    {% if product.product_category == "Formal" %}
+                        <option>---Select Product---</option>
+                        <option value="Formal" selected>Formal</option>
+                        <option value="Sports">Sports</option>
+                        <option value="Casual">Casual</option>
+                    {% elif product.product_category == "Sports" %}
+                        <option>---Select Product---</option>
+                        <option value="Formal">Formal</option>
+                        <option value="Sports" selected>Sports</option>
+                        <option value="Casual">Casual</option>
+                    {% elif product.product_category == "Casual" %}
+                        <option>---Select Product---</option>
+                        <option value="Formal">Formal</option>
+                        <option value="Sports">Sports</option>
+                        <option value="Casual" selected>Casual</option>
+                    {% endif %}
+
+                    
+                 
+                </select>
+              </div> 
+              <div class="form-group">
+                <select name="product_brand" class="form-control">
+                    {% if product.product_brand == "Puma"%}
+                        <option>---Select Brand---</option>
+                        <option value="Puma" selected>Puma</option>
+                        <option value="Reebook">Reebook</option>
+                        <option value="Adidas">Adidas</option>
+                        <option value="Calcetto">Calcetto</option>
+                        <option value="Bata">Bata</option>
+                    {% elif product.product_brand == "Reebok"%}
+                        <option>---Select Brand---</option>
+                        <option value="Puma">Puma</option>
+                        <option value="Reebook" selected>Reebook</option>
+                        <option value="Adidas">Adidas</option>
+                        <option value="Calcetto">Calcetto</option>
+                        <option value="Bata">Bata</option>
+                    {% elif product.product_brand == "Adidas"%}
+                        <option>---Select Brand---</option>
+                        <option value="Puma">Puma</option>
+                        <option value="Reebook">Reebook</option>
+                        <option value="Adidas" selected>Adidas</option>
+                        <option value="Calcetto">Calcetto</option>
+                        <option value="Bata">Bata</option>
+                    {% elif product.product_brand == "Calcetto"%}
+                        <option>---Select Brand---</option>
+                        <option value="Puma">Puma</option>
+                        <option value="Reebook">Reebook</option>
+                        <option value="Adidas">Adidas</option>
+                        <option value="Calcetto" selected>Calcetto</option>
+                        <option value="Bata">Bata</option>
+                    {% elif product.product_brand == "Bata"%}
+                        <option>---Select Brand---</option>
+                        <option value="Puma">Puma</option>
+                        <option value="Reebook">Reebook</option>
+                        <option value="Adidas">Adidas</option>
+                        <option value="Calcetto">Calcetto</option>
+                        <option value="Bata" selected>Bata</option>
+                    {% endif %}
+                  
+                </select>
+              </div>                          
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="Product Name" name="product_name" value="{{product.product_name}}">
+              </div>
+			        <div class="form-group">
+                <input type="text" class="form-control" placeholder="Product Price" name="product_price"  value="{{product.product_price}}">
+              </div>
+              <div class="form-group">
+                <select name="product_size" class="form-control">
+                    {% if product.product_size == "7" %}
+                        <option>---Select Size---</option>
+                        <option value="7" selected>7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                    {% elif product.product_size == "8" %}
+                        <option>---Select Size---</option>
+                        <option value="7">7</option>
+                        <option value="8" selected>8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                    {% elif product.product_size == "9" %}
+                        <option>---Select Size---</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9" selected>9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                    {% elif product.product_size == "10" %}
+                        <option>---Select Size---</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10" selected>10</option>
+                        <option value="11">11</option>
+                    {% elif product.product_size == "11" %}
+                        <option>---Select Size---</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11" selected>11</option>
+                    {% endif %}
+                    
+                    
+                  
+
+                </select>
+              </div> 
+              <div class="form-group">
+                <img src="{{product.product_pic.url}}" width="100px" height="100px">
+              </div>
+              <div class="form-group">
+              Product Pic:<input type="file" class="form-control" name="product_pic">
+              </div>
+              <div class="form-group">
+                <input type="submit" value="Update Product" class="btn btn-primary py-3 px-5">
+              </div>
+            </form>
+          
+          </div>
+
+          <div class="col-md-6 d-flex">
+          	<div id="map" class="bg-white"></div>
+          </div>
+        </div>
+      </div>
+    </section> 
+
+  </body>
+</html>
+{% endblock %}

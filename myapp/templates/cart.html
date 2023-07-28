@@ -1,0 +1,129 @@
+{% extends 'header.html' %}
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<script src="https://js.stripe.com/v3/"></script> 
+  </head>
+
+  <body class="goto-here">
+
+    <div class="hero-wrap hero-bread" style="background-image: url('{% static 'images/bg_6.jpg' %}');">
+      <div class="container">
+        <div class="row no-gutters slider-text align-items-center justify-content-center">
+          <div class="col-md-9 ftco-animate text-center">
+          	<p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home</a></span> <span>View Products</span></p>
+            <h1 class="mb-0 bread">View Products</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="ftco-section bg-light">
+    	<div class="container">
+    		<div class="row">
+    			<div class="col-md-8 col-lg-10 order-md-last">
+    				<div class="row">
+                {% if msg %}
+                <b style="color: blue;">{{msg}}</b>
+                {% endif %}
+                {% if cart %}
+                {% for i in cart %}
+		    			<div class="col-sm-12 col-md-12 col-lg-4 ftco-animate d-flex">
+		    				<div class="product d-flex flex-column">
+		    					<a href="#" class="img-prod"><img class="img-fluid" src="{{i.product.product_pic.url}}" style="width:500px; height:250px" alt="Colorlib Template">
+		    						<div class="overlay"></div>
+		    					</a>
+		    					<div class="text py-3 pb-4 px-3">
+		    						<div class="d-flex">
+		    							<div class="cat">
+				    						<span>{{i.product.product_brand}}</span>
+				    					</div>
+
+			    					</div>
+									<h3><a href="#">{{i.product.product_name}}</a></h3>
+		    						<div class="pricing">
+			    					  <p class="price"><span>Product Price :
+									  {{i.product.product_price}}</span></p>
+			    					</div>
+									<div class="pricing">
+								      <form name="change qty" method="post" action="{% url 'change-qty' %}">
+										{% csrf_token %}
+										  <p class="price">
+											<span>
+											   <input type="hidden" name="cid" value="{{i.pk}}">
+											   Product Qty : <input type="number" name="product_qty"
+											   value="{{i.product_qty}}" min="1" max="10" onchange="this.form.submit();"> 
+									   	    </span>
+									      </p>
+																	    
+								      </form>
+									</div>
+									<div class="pricing">
+			    					<p class="price"><span>Total Price :
+									{{i.total_price}}</span></p>
+			    					</div> 
+			    					<p class="bottom-area d-flex px-3">
+		    						<a href="{% url 'product-details' pk=i.product.pk %}" class="add-to-cart text-center py-2 mr-1">
+                                    <span>Product Details <i class="ion-ios-add ml-1"></i></span></a>
+		    											
+		    						</p>
+		    					</div>
+		    				</div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <h1>No Product In Cart</h1>
+            {% endif %}
+                    </div>
+                </div>
+			</div>
+				<form method="post">
+				   <input type="hidden" id="net_price" name="amount" value="{{net_price}}">
+				   <button type="button" class="btn btn-lg btn-primary" id="checkout-button">Checkout</button>
+				</form>
+    			</div>
+    		</div>
+    	</div>
+    </section>
+	<script type="text/javascript">
+
+		var stripe = Stripe('pk_test_51MshH6SJuXwPfjjrrgxJ5tubbOgYAhRrqNcd4RDUSq1peWpIMZrjhIiTncSUWO9u6byeDf4KxdZPkFD4hU55mVOg00aRL5RT8x');
+ 		var checkoutButton = document.getElementById('checkout-button');
+
+ checkoutButton.addEventListener('click', function() {
+//  anonimtion function
+ 
+ fetch('/create-checkout-session/', {
+ method: 'POST',
+	headers:{
+        'Accept': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest', //Necessary to work with request.is_ajax()
+
+	},
+    body: JSON.stringify({'post_data':'{{net_price}}'})
+ })
+ .then(function(response) {
+ return response.json();
+ })
+ .then(function(session) {
+ return stripe.redirectToCheckout({ sessionId: session.id });
+ })
+ .then(function(result) {
+ // If `redirectToCheckout` fails due to a browser or network
+ // error, you should display the localized error message to your
+ // customer using `error.message`.
+ if (result.error) {
+ alert(result.error.message);
+ }
+ })
+ .catch(function(error) {
+ console.error('Error:', error);
+ });
+ });
+ </script>
+  </body>
+</html>
+{% endblock %}
